@@ -8,21 +8,21 @@ public class Projectile extends GameObject {
         this.width = width;
         this.height = height;
     }
-    int x;
-    int y;
-    int width;
-    int height;
 
     @Override
     public void draw(Graphics g){
         g.drawRect(x, y, width, height);
+        hbox = new Rectangle(x,y,width,height);
     }
+    @Override
     public void tick(){
         this.y -= 5;
     }
 
 
+    @Override
     public void hitCheck(GameObject other){
+        if (other instanceof BigLasers){return;}
         if (other.x <= this.x && other.x + other.width > this.x){
             if (this.y <= other.y+other.height){
                 if (this.y >= other.y){
@@ -32,7 +32,6 @@ public class Projectile extends GameObject {
                     System.out.println(other.health);
                 }
             }
-
         }
     }
 

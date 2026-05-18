@@ -1,37 +1,37 @@
-import org.w3c.dom.css.CSS2Properties;
+// import org.w3c.dom.css.CSS2Properties;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collections;
+import javax.swing.*;
+// import java.util.ArrayList;
+// import java.util.Collections;
 
-import static java.util.Arrays.asList;
+// import static java.util.Arrays.asList;
 
 public class Screen extends JPanel implements ActionListener {
     Player player;
     Boss boss;
     Enemy enemy;
     Projectile projectile;
-    EnemyProjectile eProj;
+    ArrayList<EnemyProjectile> eProj = new ArrayList<>();
     
     boolean shoot = false;
     boolean eShot = false;
     
     Timer timer = new Timer(3000, Main.controls);
     public Screen(){
-        player = new Player(250, 500, 10, 10, 1, 1);
-        boss = (Boss) Main.controls.eList.getFirst();
+        player = new Player(250, 500, 10, 10, 2, 2);
+        boss = (Boss) Main.controls.eList.get(0);
         projectile = new Projectile(0, 0, 3, 3);
-        eProj = new EnemyProjectile(0, 0, 3, 3);
+        eProj.add(new EnemyProjectile(0, 0, 3, 3));
         path();
         timer.start();
     }
 
+    @Override
     public void paintComponent(Graphics g){
-        int x = (int) player.x;
-        int y = (int) player.y;
         super.paintComponent(g);
         for (GameObject enemy : Main.controls.eList){
             enemy.draw(g);
@@ -42,21 +42,31 @@ public class Screen extends JPanel implements ActionListener {
             projectile.draw(g);
         }
         if (eShot){
-            eProj.draw(g);
+            for (int i = 0; i < eProj.size(); i++){
+                eProj.get(i).draw(g);
+            }
         }
         if (player.deathCheck()){
-            this.setBackground(Color.white);
+            this.setBackground(Color.WHITE);
             player.x = 250;
             player.y = 500;
-            projectile.y = -5;
-            eProj.y = -5;
+            player.dx = 0;
+            player.dy = 0;
+            projectile.y = -500;
+            eProj.get(0).y = -500;
+            for (GameObject enemy : Main.controls.eList){
+                if (enemy instanceof AmbushEnemy){
+                    enemy.x = -500;
+                    enemy.y = -500;
+                }
+            }
         }
         if (boss.deathCheck()){
             this.setBackground(Color.green);
             boss.x = -500;
             boss.y = -500;
             projectile.y = -5;
-            eProj.y = -5;
+            eProj.get(0).y = -5;
             for (GameObject enemy : Main.controls.eList){
                 if (!(enemy instanceof Boss)){
                     enemy.x = -50;
@@ -90,7 +100,7 @@ public class Screen extends JPanel implements ActionListener {
     }
     int newX;
     int newY;
-    public void path(){
+    public final void path(){
         int x = (int) (Math.random() * 245);
         int y = (int) (Math.random() * 200);
         newY = (int) (player.getY() - y);
@@ -136,11 +146,14 @@ public class Screen extends JPanel implements ActionListener {
             enemy.hitCheck(player);
         }
         projectile.tick();
-        eProj.tick();
-        eProj.hitCheck(player);
+        for (EnemyProjectile proj : eProj){
+            proj.tick();
+            proj.hitCheck(player);
+        }
         for (GameObject enemy : Main.controls.eList) {
             projectile.hitCheck(enemy);
         }
+
         repaint();
     }
 }

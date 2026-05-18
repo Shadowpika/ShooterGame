@@ -16,6 +16,7 @@ public class Enemy extends GameObject{
     }
     double leeway = Math.random() * 100;
 
+    @Override
     public void tick(){
         y += velocity;
         if (y > 200+leeway){
@@ -23,5 +24,4 @@ public class Enemy extends GameObject{
             velocity = 0;
         }
     }
-
 }

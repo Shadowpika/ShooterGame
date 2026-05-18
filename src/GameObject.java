@@ -1,8 +1,11 @@
-import javax.swing.*;
+// import javax.swing.*;
 import java.awt.*;
 
 public class GameObject extends Rectangle {
-    protected int health;
+    protected double health;
+    double xPos = 0;
+    double yPos = 0;
+    Rectangle hbox = new Rectangle();
 
     public GameObject(int x, int y, int width, int height, int health){
         setBounds(x, y, width, height);
@@ -25,8 +28,11 @@ public class GameObject extends Rectangle {
         return dead;
     }
 
-    public void tick() {
-    }
+    public void tick() {}
 
     public void hitCheck(GameObject other){}
+
+    public void rotate(int x, int y){};
+
+    boolean move = true;
 }
