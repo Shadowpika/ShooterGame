@@ -158,12 +158,12 @@ public class GameControls extends JPanel implements KeyListener, MouseListener, 
         if (e.getKeyCode() == keyN){
             enemy = "nuke"; //beeg explosion <-
         }
-        if (e.getKeyCode() == keyB){
-            enemy = "bazooka"; //shoots bullet with shrapnel and explosion
-        }
-        if (e.getKeyCode() == keyL){
-            enemy = "laser gun"; // asriel laser attack 
-        }
+        // if (e.getKeyCode() == keyB){
+        //     enemy = "bazooka"; //shoots bullet with shrapnel and explosion
+        // }
+        // if (e.getKeyCode() == keyL){
+        //     enemy = "laser gun"; // asriel laser attack 
+        // }
     }
 
     @Override
